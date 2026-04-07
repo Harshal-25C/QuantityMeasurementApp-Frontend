@@ -16,6 +16,9 @@ export async function loginApi(email: string, password: string) {
   }
 
   var data = await response.json();
+
+  localStorage.setItem('qm_token', data.token);
+  
   return data; // { token, message }
 }
 
@@ -109,7 +112,6 @@ async function quantityRequest(endpoint: string, payload: any) {
   }
 
   if (!response.ok) {
-  var text = await response.text();
   try {
     var error = JSON.parse(text);
     throw new Error(error.errorMessage || error.message || 'Request failed');
