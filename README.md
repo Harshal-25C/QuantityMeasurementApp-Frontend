@@ -1,46 +1,306 @@
-# Getting Started with Create React App
+# 🚀 Quantity Measurement App – Frontend (React + TypeScript)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> A modern, interactive UI for performing **unit conversions, comparisons, and arithmetic operations** across multiple measurement types — powered by React and integrated with a Spring Boot backend.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+🎯 **Authentication**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* User Registration & Login (JWT-based)
+* Secure API communication using Bearer Token
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+📏 **Measurement Operations**
 
-### `npm test`
+* Compare quantities (>, <, =)
+* Convert units across categories
+* Perform arithmetic operations:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  * ➕ Add
+  * ➖ Subtract
+  * ➗ Divide
+  * ✖️ Multiply
+  * 🟰 Compare
 
-### `npm run build`
+📊 **History Tracking**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* View past operations
+* Filter by operation type
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+🎨 **User Experience**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Responsive UI
+* Toast notifications
+* Real-time results
+* Clean dashboard interface
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🧠 Supported Measurement Types
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Type            | Units                                   |
+| --------------- | --------------------------------------- |
+| 📏 Length       | FEET, INCHES, YARDS, CENTIMETERS        |
+| ⚖️ Weight       | MILLIGRAM, GRAM, KILOGRAM, POUND, TONNE |
+| 🧪 Volume       | LITRE, MILLILITRE, GALLON               |
+| 🌡️ Temperature | CELSIUS, FAHRENHEIT, KELVIN             |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+---
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 🏗️ Project Structure
 
-## Learn More
+```
+src/
+│
+├── pages/
+│   ├── Login.tsx
+│   ├── Dashboard.tsx
+│
+├── components/
+│   ├── Toast.tsx
+│
+├── services/
+│   ├── api.ts
+│
+├── App.tsx
+├── index.tsx
+└── styles.css
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🔗 API Integration
+
+All API calls are handled in:
+
+```
+src/services/api.ts
+```
+
+### Base URL
+
+```ts
+var BASE_URL = 'http://localhost:8080';
+```
+
+### Example API
+
+```ts
+export async function compareApi(payload: any) {
+  return quantityRequest('/api/v1/quantities/compare', payload);
+}
+```
+
+---
+
+## 🔐 Authentication Flow
+
+1. User logs in
+2. Backend returns JWT token
+3. Token stored in localStorage:
+
+```ts
+localStorage.setItem('qm_token', token);
+```
+
+4. Token used in all API calls:
+
+```ts
+headers: {
+  Authorization: 'Bearer ' + token
+}
+```
+
+---
+
+## 🔄 Data Flow (Frontend → Backend)
+
+```text
+User Input
+   ↓
+React UI (Dashboard)
+   ↓
+API Call (fetch)
+   ↓
+Spring Boot Backend
+   ↓
+Response JSON
+   ↓
+UI Update (Result Display)
+```
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone <your-repo-url>
+cd quantity-measurement-app-frontend
+```
+
+---
+
+### 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+### 3️⃣ Start Development Server
+
+```bash
+npm start
+```
+
+👉 Open in browser:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 📜 Available Scripts
+
+### ▶️ Start App
+
+```bash
+npm start
+```
+
+Runs the app in development mode.
+Hot reload enabled.
+
+---
+
+### 🧪 Run Tests
+
+```bash
+npm test
+```
+
+Launches test runner in interactive mode.
+
+---
+
+### 🏗️ Build for Production
+
+```bash
+npm run build
+```
+
+Creates optimized production build in `/build`.
+
+---
+
+### ⚠️ Eject Config (Advanced)
+
+```bash
+npm run eject
+```
+
+> ⚠️ This is irreversible.
+
+---
+
+## 🧪 Testing Guide
+
+### ✔️ Functional Testing
+
+* Signup → Login → Dashboard
+* Compare units
+* Convert units
+* Perform arithmetic
+* View history
+
+### ❌ Negative Testing
+
+* Invalid inputs
+* Missing token
+* Incorrect unit/type
+
+---
+
+## 🐛 Common Issues & Fixes
+
+### ❌ CORS Error
+
+**Fix:**
+
+```java
+@CrossOrigin(origins = "http://localhost:3000")
+```
+
+---
+
+### ❌ Failed to Fetch
+
+* Backend not running
+* Wrong BASE_URL
+* CORS not configured
+
+---
+
+### ❌ TypeScript Errors
+
+**Fix:**
+
+```bash
+npm install typescript@4.9.5
+```
+
+---
+
+### ❌ react-scripts not found
+
+```bash
+npm install
+```
+
+---
+
+## 🔮 Future Enhancements
+
+* 📈 Graphical analytics (charts)
+* 📱 Mobile responsive improvements
+* 🔐 OAuth login
+* 🌐 Deployment (AWS / Vercel)
+* 📊 Advanced history filtering
+
+---
+
+## 📚 Learn More
+
+* React Docs: https://react.dev
+* Create React App: https://create-react-app.dev
+* TypeScript Docs: https://www.typescriptlang.org
+
+---
+
+## 👨‍💻 Author
+
+**Harshal Choudhary**
+
+* 💻 Java + Spring Boot Developer
+* ☁️ Cloud & Full Stack Enthusiast
+* 🚀 Building scalable applications
+
+---
+
+## ⭐ Final Note
+
+This frontend is tightly integrated with a **Spring Boot microservices backend**, demonstrating:
+
+✔ Clean architecture
+✔ REST API integration
+✔ JWT Security
+✔ Real-world project structure
+
+---
+
+> 💡 *“Code. Debug. Improve. Repeat.”*
