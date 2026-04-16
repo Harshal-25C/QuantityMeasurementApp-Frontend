@@ -43,17 +43,24 @@ export async function registerApi(name: string, email: string, password: string,
   });
 
   var text = await response.text();
+  let data: any = {};
 
-  if (!response.ok) {
-    try {
-      var error = text ? JSON.parse(text) : {};
-      throw new Error(error.errorMessage || error.message || text || 'Request failed');
-    } catch {
-      throw new Error(text || 'Request failed');
-    }
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = {};
   }
 
-  return text; // "User registered successfully"
+  if (!response.ok) {
+    throw new Error(
+      data.errorMessage ||
+      data.message ||
+      text ||
+      `Request failed with status ${response.status}`
+    );
+  }
+
+  return data;
 }
 
 // ── Quantity APIs ────────────────────────────────────────────────
