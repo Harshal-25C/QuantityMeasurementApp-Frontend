@@ -10,16 +10,21 @@ export async function loginApi(email: string, password: string) {
     body: JSON.stringify({ email: email, password: password })
   });
 
-  if (!response.ok) {
-    var error = await response.json();
-    throw new Error(error.message || 'Login failed');
+  var text = await response.text();
+  let data: any = {};
+
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error(text || 'Invalid server response');
   }
 
-  var data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || data.errorMessage || text || 'Login failed');
+  }
 
   localStorage.setItem('qm_token', data.token);
-  
-  return data; // { token, message }
+  return data;
 }
 
 // ── Register ─────────────────────────────────────────────────────
@@ -37,13 +42,18 @@ export async function registerApi(name: string, email: string, password: string,
     })
   });
 
+  var text = await response.text();
+
   if (!response.ok) {
-    var error = await response.json();
-    throw new Error(error.errorMessage || error.message || 'Request failed');
+    try {
+      var error = text ? JSON.parse(text) : {};
+      throw new Error(error.errorMessage || error.message || text || 'Request failed');
+    } catch {
+      throw new Error(text || 'Request failed');
+    }
   }
 
-  var data = await response.text();
-  return data; // "User registered successfully"
+  return text; // "User registered successfully"
 }
 
 // ── Quantity APIs ────────────────────────────────────────────────
